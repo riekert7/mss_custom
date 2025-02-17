@@ -1,0 +1,77 @@
+[
+ {
+  "active": 0,
+  "contact": "Riekert Luies-1",
+  "docstatus": 0,
+  "doctype": "WhatsApp Dialogue Exchange",
+  "modified": "2025-01-24 08:14:48.243109",
+  "name": "m48ilrdfs9",
+  "wde_table": [
+   {
+    "content": "Service Request",
+    "content_type_received": "text",
+    "parent": "m48ilrdfs9",
+    "parentfield": "wde_table",
+    "parenttype": "WhatsApp Dialogue Exchange"
+   },
+   {
+    "content": "Jdosjdjskskjsjs isjsidjdiksksksksndjdkdiid. Isjsisjdjsksij",
+    "content_type_received": "text",
+    "parent": "m48ilrdfs9",
+    "parentfield": "wde_table",
+    "parenttype": "WhatsApp Dialogue Exchange"
+   }
+  ],
+  "whatsapp_dialogue": "lpm0i21ut3"
+ },
+ {
+  "active": 0,
+  "contact": "Riekert Luies-1",
+  "docstatus": 0,
+  "doctype": "WhatsApp Dialogue Exchange",
+  "modified": "2025-01-24 21:09:29.813723",
+  "name": "gm79mtb3e8",
+  "wde_table": [
+   {
+    "content": "Cant loging",
+    "content_type_received": "text",
+    "parent": "gm79mtb3e8",
+    "parentfield": "wde_table",
+    "parenttype": "WhatsApp Dialogue Exchange"
+   },
+   {
+    "content": "Hdjsbfjsndnd d djs dvjd dhs dje djd she dvdjs s sjd die did e djd rhei er r dhd d djd sks d sid d did sjdid d",
+    "content_type_received": "text",
+    "parent": "gm79mtb3e8",
+    "parentfield": "wde_table",
+    "parenttype": "WhatsApp Dialogue Exchange"
+   }
+  ],
+  "whatsapp_dialogue": "lpm0i21ut3"
+ },
+ {
+  "active": 0,
+  "contact": "Riekert Luies-1",
+  "docstatus": 0,
+  "doctype": "WhatsApp Dialogue Exchange",
+  "modified": "2025-01-27 10:54:17.630192",
+  "name": "hgt4r1i807",
+  "wde_table": [
+   {
+    "content": "Printer not working",
+    "content_type_received": "text",
+    "parent": "hgt4r1i807",
+    "parentfield": "wde_table",
+    "parenttype": "WhatsApp Dialogue Exchange"
+   },
+   {
+    "content": "Hdksbdkdkdvkdje kdjdjdkdks kdjbeosb",
+    "content_type_received": "text",
+    "parent": "hgt4r1i807",
+    "parentfield": "wde_table",
+    "parenttype": "WhatsApp Dialogue Exchange"
+   }
+  ],
+  "whatsapp_dialogue": "lpm0i21ut3"
+ }
+]

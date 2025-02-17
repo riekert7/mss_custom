@@ -1,0 +1,27 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "WhatsApp Dialogue",
+  "modified": "2025-01-23 23:54:11.925128",
+  "name": "lpm0i21ut3",
+  "title": "/add-issue",
+  "wd_table": [
+   {
+    "error_message": "Sorry I did not catch a text subject, please try again",
+    "parent": "lpm0i21ut3",
+    "parentfield": "wd_table",
+    "parenttype": "WhatsApp Dialogue",
+    "receive_text": "text",
+    "send_text": "Tell me briefly, what is the *subject* of the issue?"
+   },
+   {
+    "error_message": "Sorry I did not catch a text description of the issue, can you please try again",
+    "parent": "lpm0i21ut3",
+    "parentfield": "wd_table",
+    "parenttype": "WhatsApp Dialogue",
+    "receive_text": "text",
+    "send_text": "Now describe the issue in more *detail*..."
+   }
+  ]
+ }
+]

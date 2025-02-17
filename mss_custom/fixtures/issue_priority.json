@@ -1,0 +1,30 @@
+[
+ {
+  "description": null,
+  "docstatus": 0,
+  "doctype": "Issue Priority",
+  "modified": "2024-12-10 12:22:33.757730",
+  "name": "Low"
+ },
+ {
+  "description": null,
+  "docstatus": 0,
+  "doctype": "Issue Priority",
+  "modified": "2024-12-11 13:42:21.930090",
+  "name": "Critical"
+ },
+ {
+  "description": null,
+  "docstatus": 0,
+  "doctype": "Issue Priority",
+  "modified": "2024-12-10 12:22:33.764209",
+  "name": "Medium"
+ },
+ {
+  "description": null,
+  "docstatus": 0,
+  "doctype": "Issue Priority",
+  "modified": "2024-12-10 12:22:33.767191",
+  "name": "High"
+ }
+]
