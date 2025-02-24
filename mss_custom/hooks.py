@@ -246,8 +246,8 @@ fixtures = [
   # {"dt": "Custom Field", "filters": []},
   # {"dt": "Server Script", "filters": []},
   # {"dt": "Client Script", "filters": []},
-  {"dt": "DocType", "filters": [["name", "=", "WhatsApp Dialogue"]]},
-  {"dt": "WhatsApp Dialogue", "filters": []},  # Includes all records
+  # {"dt": "DocType", "filters": [["name", "=", "WhatsApp Dialogue"]]},
+  # {"dt": "WhatsApp Dialogue", "filters": []},  # Includes all records
   # {"dt": "DocType", "filters": [["name", "=", "WhatsApp Dialogue Item"]]},
   # {"dt": "WhatsApp Dialogue Item", "filters": []},  # Includes all records
   {"dt": "DocType", "filters": [["name", "=", "WhatsApp Dialogue Exchange"]]},
