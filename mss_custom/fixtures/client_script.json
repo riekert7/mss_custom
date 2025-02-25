@@ -1,0 +1,46 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Issue",
+  "enabled": 0,
+  "modified": "2025-02-25 12:37:41.097636",
+  "module": null,
+  "name": "sys_issue_timely_refresh",
+  "script": "frappe.ui.form.on('Issue', {\r\n    refresh: function(frm) {\r\n        setInterval(function() {\r\n            if (frm.doc.__unsaved) {\r\n                return;\r\n            }\r\n            frm.reload_doc();\r\n        }, 10000); // 10000 milliseconds = 10 seconds\r\n    }\r\n});",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Issue",
+  "enabled": 1,
+  "modified": "2025-02-25 12:37:41.047981",
+  "module": null,
+  "name": "sys_issue_whatsapp_chat",
+  "script": "frappe.ui.form.on('Issue', {\r\n    refresh: function (frm) {\r\n        if (!frm.doc.__islocal) { // Fetch only for saved documents\r\n            frappe.call({\r\n                method: 'sys_api_whatsapp_chat', // Replace with the actual server script name\r\n                args: {\r\n                    issue_name: frm.doc.name // Ensure this matches the server script's parameter\r\n                },\r\n                callback: function (r) {\r\n                    if (r.message) {\r\n                        // Inject the response HTML into the custom field\r\n                        frm.fields_dict.custom_whatsapp_chat.html(r.message);\r\n                    } else {\r\n                        frm.fields_dict.custom_whatsapp_chat.html('<div>No activity found.</div>');\r\n                    }\r\n                }\r\n            });\r\n        }\r\n    }\r\n});\r\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Issue",
+  "enabled": 1,
+  "modified": "2025-02-25 12:37:40.999045",
+  "module": null,
+  "name": "sys_issue_customer_select",
+  "script": "frappe.ui.form.on('Issue', {\r\n    refresh: function(frm) {\r\n        // Apply dynamic filter when form is loaded\r\n        frm.fields_dict['custom_contact_chat'].get_query = function(doc, cdt, cdn) {\r\n            return {\r\n                filters: {\r\n                    'link_doctype': 'Customer',\r\n                    'link_name': doc.customer\r\n                }\r\n            };\r\n        };\r\n    }\r\n});\r\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Issue",
+  "enabled": 1,
+  "modified": "2025-02-25 12:37:40.913342",
+  "module": null,
+  "name": "sys_issue_send_whatsapp_button",
+  "script": "frappe.ui.form.on('Issue', {\r\n    refresh: function (frm) {\r\n        console.log('Refreshing form...'); // For debugging\r\n\r\n        frm.add_custom_button(__(\"Send WhatsApp\"), function () {\r\n            console.log('Send WhatsApp button clicked');\r\n\r\n            if (!frm.doc.custom_contact_chat) {\r\n                frappe.msgprint({\r\n                    title: __('Error'),\r\n                    indicator: 'red',\r\n                    message: __('No contact selected in the \"custom_contact_chat\" field.')\r\n                });\r\n                return;\r\n            }\r\n\r\n            // Fetch the contact details using frappe.call\r\n            frappe.call({\r\n                method: \"frappe.client.get\",\r\n                args: {\r\n                    doctype: \"Contact\",\r\n                    name: frm.doc.custom_contact_chat\r\n                },\r\n                callback: function (response) {\r\n                    console.log('API Response:', response);\r\n\r\n                    if (response.message) {\r\n                        let contact = response.message;\r\n\r\n                        // Ensure contact has valid phone number\r\n                        let contact_number = contact.mobile_no || contact.phone || null;\r\n                        if (!contact_number) {\r\n                            frappe.msgprint({\r\n                                title: __('Error'),\r\n                                indicator: 'red',\r\n                                message: __('The selected contact has no phone or mobile number.')\r\n                            });\r\n                            return;\r\n                        }\r\n\r\n                        // Create a modal dialog for entering the WhatsApp message\r\n                        let d = new frappe.ui.Dialog({\r\n                            title: __('Send WhatsApp Message'),\r\n                            fields: [\r\n                                {\r\n                                    label: 'To',\r\n                                    fieldname: 'to',\r\n                                    fieldtype: 'Data',\r\n                                    default: contact_number,\r\n                                    read_only: 1\r\n                                },\r\n                                {\r\n                                    label: 'Content Type',\r\n                                    fieldname: 'content_type',\r\n                                    fieldtype: 'Select',\r\n                                    options: ['text', 'image', 'document', 'audio', 'video'],\r\n                                    default: 'text'\r\n                                },\r\n                                {\r\n                                    label: 'Message',\r\n                                    fieldname: 'message',\r\n                                    fieldtype: 'Text'\r\n                                },\r\n                                {\r\n                                    label: 'Attach File',\r\n                                    fieldname: 'attach',\r\n                                    fieldtype: 'Attach',\r\n                                    depends_on: 'eval:doc.content_type != \"text\"'\r\n                                }\r\n                            ],\r\n                            primary_action_label: __('Send'),\r\n                            primary_action(values) {\r\n                                // Create the WhatsApp message document\r\n                                frappe.call({\r\n                                    method: \"frappe.client.insert\",\r\n                                    args: {\r\n                                        doc: {\r\n                                            doctype: 'WhatsApp Message',\r\n                                            to: values.to,\r\n                                            message: values.message,\r\n                                            reference_doctype: \"Issue\",\r\n                                            reference_name: frm.doc.name,\r\n                                            type: 'Outgoing',\r\n                                            content_type: values.content_type,\r\n                                            attach: values.attach\r\n                                        }\r\n                                    },\r\n                                    callback: function (response) {\r\n                                        if (response.message) {\r\n                                            frappe.msgprint({\r\n                                                title: __('Success'),\r\n                                                indicator: 'green',\r\n                                                message: __('WhatsApp message sent successfully.')\r\n                                            });\r\n                                            d.hide();\r\n                                            frm.refresh(); // Refresh the form\r\n                                        } else {\r\n                                            frappe.msgprint({\r\n                                                title: __('Error'),\r\n                                                indicator: 'red',\r\n                                                message: __('Failed to send WhatsApp message.')\r\n                                            });\r\n                                        }\r\n                                    }\r\n                                });\r\n                            }\r\n                        });\r\n\r\n                        d.show();\r\n                    } else {\r\n                        frappe.msgprint({\r\n                            title: __('Error'),\r\n                            indicator: 'red',\r\n                            message: __('Failed to fetch contact details.')\r\n                        });\r\n                    }\r\n                },\r\n                error: function (err) {\r\n                    console.error('Error fetching contact:', err);\r\n                    frappe.msgprint({\r\n                        title: __('Error'),\r\n                        indicator: 'red',\r\n                        message: __('An error occurred while fetching the contact details. Please check the console for details.')\r\n                    });\r\n                }\r\n            });\r\n        });\r\n    }\r\n});",
+  "view": "Form"
+ }
+]
