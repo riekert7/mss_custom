@@ -244,8 +244,8 @@ app_license = "mit"
 
 fixtures = [
   # {"dt": "Custom Field", "filters": []},
-  # {"dt": "Server Script", "filters": []},
-  # {"dt": "Client Script", "filters": []},
+  {"dt": "Server Script", "filters": []},
+  {"dt": "Client Script", "filters": []},
   # {"dt": "DocType", "filters": [["name", "=", "WhatsApp Dialogue"]]},
   # {"dt": "WhatsApp Dialogue", "filters": []},  # Includes all records
   # {"dt": "DocType", "filters": [["name", "=", "WhatsApp Dialogue Item"]]},
@@ -257,5 +257,5 @@ fixtures = [
   # {"dt": "WhatsApp Settings", "filters": []},
   # {"dt": "Issue Type", "filters": []},
   # {"dt": "Issue Priority", "filters": []},
-  {"dt": "DocType", "filters": [["module", "=", "MSS Custom"]]}
+  # {"dt": "DocType", "filters": [["module", "=", "MSS Custom"]]}
 ]
