@@ -241,21 +241,21 @@ app_license = "mit"
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
-
-fixtures = [
-  # {"dt": "Custom Field", "filters": []},
-  {"dt": "Server Script", "filters": []},
-  {"dt": "Client Script", "filters": []},
-  # {"dt": "DocType", "filters": [["name", "=", "WhatsApp Dialogue"]]},
-  # {"dt": "WhatsApp Dialogue", "filters": []},  # Includes all records
-  # {"dt": "DocType", "filters": [["name", "=", "WhatsApp Dialogue Item"]]},
-  # {"dt": "WhatsApp Dialogue Item", "filters": []},  # Includes all records
-  # {"dt": "DocType", "filters": [["name", "=", "WhatsApp Dialogue Exchange"]]},
-  # {"dt": "WhatsApp Dialogue Exchange", "filters": []},  # Includes all records
-  # {"dt": "DocType", "filters": [["name", "=", "WhatsApp Dialogue Exchange Item"]]},
-  # {"dt": "WhatsApp Dialogue Exchange Item", "filters": []},  # Includes all records
-  # {"dt": "WhatsApp Settings", "filters": []},
-  # {"dt": "Issue Type", "filters": []},
-  # {"dt": "Issue Priority", "filters": []},
-  # {"dt": "DocType", "filters": [["module", "=", "MSS Custom"]]}
-]
+#
+# fixtures = [
+#   # {"dt": "Custom Field", "filters": []},
+#   # {"dt": "Server Script", "filters": []},
+#   # {"dt": "Client Script", "filters": []},
+#   # {"dt": "DocType", "filters": [["name", "=", "WhatsApp Dialogue"]]},
+#   # {"dt": "WhatsApp Dialogue", "filters": []},  # Includes all records
+#   # {"dt": "DocType", "filters": [["name", "=", "WhatsApp Dialogue Item"]]},
+#   # {"dt": "WhatsApp Dialogue Item", "filters": []},  # Includes all records
+#   # {"dt": "DocType", "filters": [["name", "=", "WhatsApp Dialogue Exchange"]]},
+#   # {"dt": "WhatsApp Dialogue Exchange", "filters": []},  # Includes all records
+#   # {"dt": "DocType", "filters": [["name", "=", "WhatsApp Dialogue Exchange Item"]]},
+#   # {"dt": "WhatsApp Dialogue Exchange Item", "filters": []},  # Includes all records
+#   # {"dt": "WhatsApp Settings", "filters": []},
+#   # {"dt": "Issue Type", "filters": []},
+#   # {"dt": "Issue Priority", "filters": []},
+#   # {"dt": "DocType", "filters": [["module", "=", "MSS Custom"]]}
+# ]
