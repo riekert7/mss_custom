@@ -25,8 +25,10 @@ app_license = "mit"
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_css = "/assets/mss_custom/css/mss_custom.css"
-# app_include_js = "/assets/mss_custom/js/mss_custom.js"
+app_include_css = "/assets/mss_custom/css/mss_custom.css"
+app_include_js = [
+    "/assets/mss_custom/js/issue.js"
+]
 
 # include js, css files in header of web template
 # web_include_css = "/assets/mss_custom/css/mss_custom.css"
@@ -137,13 +139,13 @@ app_license = "mit"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+# mss_custom/hooks.py
+
+doc_events = {
+    "Issue": {
+        "before_print": "mss_custom.mss_custom.issue.before_print_issue"
+    }
+}
 
 # Scheduled Tasks
 # ---------------
@@ -241,21 +243,10 @@ app_license = "mit"
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
-#
-# fixtures = [
-#   # {"dt": "Custom Field", "filters": []},
-#   # {"dt": "Server Script", "filters": []},
-#   # {"dt": "Client Script", "filters": []},
-#   # {"dt": "DocType", "filters": [["name", "=", "WhatsApp Dialogue"]]},
-#   # {"dt": "WhatsApp Dialogue", "filters": []},  # Includes all records
-#   # {"dt": "DocType", "filters": [["name", "=", "WhatsApp Dialogue Item"]]},
-#   # {"dt": "WhatsApp Dialogue Item", "filters": []},  # Includes all records
-#   # {"dt": "DocType", "filters": [["name", "=", "WhatsApp Dialogue Exchange"]]},
-#   # {"dt": "WhatsApp Dialogue Exchange", "filters": []},  # Includes all records
-#   # {"dt": "DocType", "filters": [["name", "=", "WhatsApp Dialogue Exchange Item"]]},
-#   # {"dt": "WhatsApp Dialogue Exchange Item", "filters": []},  # Includes all records
-#   # {"dt": "WhatsApp Settings", "filters": []},
-#   # {"dt": "Issue Type", "filters": []},
-#   # {"dt": "Issue Priority", "filters": []},
-#   # {"dt": "DocType", "filters": [["module", "=", "MSS Custom"]]}
-# ]
+
+fixtures = [
+    {"dt": "Custom Field", "filters": [["module", "=", "MSS Custom"]]},
+    {"dt": "Server Script", "filters": [["module", "=", "MSS Custom"], ["disabled", "=", 0]]},
+    {"dt": "DocType", "filters": [["module", "=", "MSS Custom"]]},
+    {"dt": "Print Format", "filters": [["module", "=", "MSS Custom"]]}
+]
