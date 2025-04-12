@@ -139,11 +139,11 @@ app_include_js = [
 # ---------------
 # Hook on document methods and events
 
-# mss_custom/hooks.py
-
 doc_events = {
     "Issue": {
-        "before_print": "mss_custom.mss_custom.issue.before_print_issue"
+        "before_print": "mss_custom.mss_custom.issue.before_print_issue",
+        "validate": "mss_custom.mss_custom.doctype.issue_users.issue_users.validate_issue_users",
+        "on_update": "mss_custom.mss_custom.doctype.issue_users.issue_users.handle_issue_users_changes"
     }
 }
 
