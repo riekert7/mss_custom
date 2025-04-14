@@ -10,7 +10,8 @@ $(document).on('app_ready', function () {
                         frm.custom_messages_section = $(`
                             <div class="section issue-form">
                                 <div class="section-head">
-                                    <h3>Messages Timeline</h3>
+                                <h3></h3>    
+                                <h3>WhatsApp Chats on Ticket</h3>
                                 </div>
                                 <div class="section-body">
                                     <div class="mss-custom-whatsapp-timeline">
@@ -82,15 +83,21 @@ function update_messages_display(frm, messages) {
     
     // Sort contacts alphabetically
     const sortedContacts = Object.keys(contactMessages).sort((a, b) => {
-        // First try to sort by contact name
-        const nameA = frappe.utils.escape_html(contactMessages[a][0].contact_name || a);
-        const nameB = frappe.utils.escape_html(contactMessages[b][0].contact_name || b);
-        return nameA.localeCompare(nameB);
+        const nameA = (contactMessages[a][0].contact_name || '').toLowerCase();
+        const nameB = (contactMessages[b][0].contact_name || '').toLowerCase();
+        if (nameA && nameB) {
+            return nameA.localeCompare(nameB);
+        }
+        // If no contact name, sort by phone number
+        return a.localeCompare(b);
     });
     
-    // Create or update chat sections for each contact in sorted order
+    // Create or update chat sections for each contact
     sortedContacts.forEach(contact => {
         const msgs = contactMessages[contact];
+        // Sort messages by creation time
+        msgs.sort((a, b) => new Date(a.creation) - new Date(b.creation));
+        
         // Get contact name
         frappe.call({
             method: 'mss_custom.mss_custom.whatsapp.get_contact_name',
@@ -115,29 +122,48 @@ function update_messages_display(frm, messages) {
                         </div>
                     `);
                     
-                    container.append(chatSection);
+                    // Find the correct position to insert the new section
+                    let inserted = false;
+                    container.children().each(function() {
+                        const existingName = $(this).find('h3').text().toLowerCase();
+                        if (contactName.toLowerCase().localeCompare(existingName) < 0) {
+                            $(this).before(chatSection);
+                            inserted = true;
+                            return false;
+                        }
+                    });
+                    
+                    if (!inserted) {
+                        container.append(chatSection);
+                    }
                 }
                 
                 // Update the timeline with messages
                 const timeline = chatSection.find('.mss-custom-timeline');
-                timeline.empty(); // Clear existing messages
+                const wasAtBottom = isScrolledToBottom(timeline);
                 
-                // Sort messages by creation time
-                msgs.sort((a, b) => new Date(a.creation) - new Date(b.creation));
+                timeline.empty(); // Clear existing messages
                 
                 msgs.forEach(msg => {
                     const msgClass = msg.type === 'Incoming' ? 'mss-custom-message-received' : 'mss-custom-message-sent';
                     const timestamp = frappe.datetime.str_to_user(msg.creation);
                     
-                    let messageContent = msg.content_type === 'text' 
-                        ? frappe.utils.escape_html(msg.message)
-                        : `<a href="${msg.message}" target="_blank">${msg.message.split('/').pop()}</a>`;
+                    let messageContent = '';
+                    if (msg.content_type === 'text') {
+                        messageContent = frappe.utils.escape_html(msg.message || '');
+                    } else if (msg.message) {
+                        const fileName = msg.message.split('/').pop() || 'File';
+                        messageContent = `<a href="${msg.message}" target="_blank">${fileName}</a>`;
+                    }
                     
                     const messageElement = $(`
                         <div class="mss-custom-timeline-item">
                             <div class="${msgClass}">
-                                <p>${messageContent}</p>
-                                <div class="mss-custom-message-timestamp">${timestamp}</div>
+                                <div class="mss-custom-message-content">
+                                    ${messageContent}
+                                </div>
+                                <div class="mss-custom-message-${msg.type === 'Incoming' ? 'received' : 'sent'}-timestamp">${timestamp}</div>
+                                ${msg.type !== 'Incoming' && msg.owner ? `<div class="mss-custom-message-owner">${frappe.utils.escape_html(msg.owner)}</div>` : ''}
                             </div>
                         </div>
                     `);
@@ -145,11 +171,22 @@ function update_messages_display(frm, messages) {
                     timeline.append(messageElement);
                 });
                 
-                // Scroll to bottom
-                timeline.parent().scrollTop(timeline[0].scrollHeight);
+                // Scroll to bottom if it was at bottom before update
+                if (wasAtBottom) {
+                    scrollToBottom(timeline);
+                }
             }
         });
     });
+}
+
+function isScrolledToBottom(element) {
+    const threshold = 50; // pixels from bottom to consider "at bottom"
+    return element[0].scrollHeight - element.scrollTop() - element.outerHeight() <= threshold;
+}
+
+function scrollToBottom(element) {
+    element.scrollTop(element[0].scrollHeight);
 }
 
 function subscribe_to_updates(frm) {
@@ -185,15 +222,22 @@ function update_contact_timeline(chatSection, messages) {
         const msgClass = msg.type === 'Incoming' ? 'mss-custom-message-received' : 'mss-custom-message-sent';
         const timestamp = frappe.datetime.str_to_user(msg.creation);
         
-        let messageContent = msg.content_type === 'text' 
-            ? frappe.utils.escape_html(msg.message)
-            : `<a href="${msg.message}" target="_blank">${msg.message.split('/').pop()}</a>`;
+        let messageContent = '';
+        if (msg.content_type === 'text') {
+            messageContent = frappe.utils.escape_html(msg.message || '');
+        } else if (msg.message) {
+            const fileName = msg.message.split('/').pop() || 'File';
+            messageContent = `<a href="${msg.message}" target="_blank">${fileName}</a>`;
+        }
         
         const messageElement = $(`
             <div class="mss-custom-timeline-item">
                 <div class="${msgClass}">
-                    <p>${messageContent}</p>
-                    <div class="mss-custom-message-timestamp">${timestamp}</div>
+                    <div class="mss-custom-message-content">
+                        ${messageContent}
+                    </div>
+                    <div class="mss-custom-message-${msg.type === 'Incoming' ? 'received' : 'sent'}-timestamp">${timestamp}</div>
+                    ${msg.type !== 'Incoming' && msg.owner ? `<div class="mss-custom-message-owner">${frappe.utils.escape_html(msg.owner)}</div>` : ''}
                 </div>
             </div>
         `);

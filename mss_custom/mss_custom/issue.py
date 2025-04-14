@@ -183,16 +183,16 @@ def generate_whatsapp_messages_html(issue_name):
                     line-height: 1.3;
                     text-align: left;
                 }
-                .mss-custom-message-sent-timestamp {
-                    font-size: 8px;
+                .mss-custom-message-sent-timestamp,
+                .mss-custom-message-received-timestamp {
+                    font-size: 6px !important;
                     color: #666666;
                     margin-top: 2px;
+                }
+                .mss-custom-message-sent-timestamp {
                     text-align: left;
                 }
                 .mss-custom-message-received-timestamp {
-                    font-size: 8px;
-                    color: #666666;
-                    margin-top: 2px;
                     text-align: right;
                 }
                 .mss-custom-message-owner {
@@ -267,9 +267,14 @@ def generate_whatsapp_messages_html(issue_name):
                 timestamp = frappe.utils.format_datetime(msg.creation)
                 
                 if msg.content_type == "text":
-                    message_content = frappe.utils.escape_html(msg.message)
+                    message_content = frappe.utils.escape_html(msg.message or '')
                 else:
-                    message_content = f'<a href="{msg.message}" target="_blank">{msg.message.split("/")[-1]}</a>'
+                    message_content = ''
+                    if msg.message:
+                        try:
+                            message_content = f'<a href="{msg.message}" target="_blank">{msg.message.split("/")[-1]}</a>'
+                        except (AttributeError, IndexError):
+                            message_content = f'<a href="{msg.message}" target="_blank">File</a>'
                 
                 # Add owner info for outgoing messages
                 owner_info = ""
@@ -353,13 +358,13 @@ def generate_activity_timeline_html(doctype, docname):
         if comm.content or comm.subject:
             all_activities.append({
                 "type": "communication",
-                    "content": comm.content or "",
-                    "subject": comm.subject or "",
+                        "content": comm.content or "",
+                        "subject": comm.subject or "",
                 "creation": comm.creation,
-                    "by": comm.sender,
-                    "recipients": comm.recipients,
-                    "communication_type": comm.communication_type,
-                    "owner": comm.owner
+                        "by": comm.sender,
+                        "recipients": comm.recipients,
+                        "communication_type": comm.communication_type,
+                        "owner": comm.owner
             })
     
     # Process comments
@@ -629,11 +634,3 @@ def generate_activity_timeline_html(doctype, docname):
     """
     
     return html
-
-def get_contact_name(phone_number):
-    """Get the contact name for a given phone number."""
-    try:
-        contact = frappe.get_doc("WhatsApp Contact", {"mobile_no": phone_number})
-        return contact.contact_name
-    except frappe.DoesNotExistError:
-        return phone_number

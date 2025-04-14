@@ -7,6 +7,8 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 15px;
+    max-height: 600px;
+    overflow-y: auto;
 }
 
 .mss-custom-chat-section {
@@ -14,12 +16,16 @@
     border-radius: 6px;
     padding: 10px;
     background: var(--mss-custom-fg-color);
+    height: 500px;
+    display: flex;
+    flex-direction: column;
 }
 
 .mss-custom-contact-header {
     margin-bottom: 10px;
     padding-bottom: 8px;
     border-bottom: 1px solid var(--mss-custom-border-color);
+    flex-shrink: 0;
 }
 
 .mss-custom-contact-header h3 {
@@ -38,6 +44,27 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    overflow-y: auto;
+    flex-grow: 1;
+    padding-right: 5px;
+}
+
+.mss-custom-timeline::-webkit-scrollbar {
+    width: 6px;
+}
+
+.mss-custom-timeline::-webkit-scrollbar-track {
+    background: var(--mss-custom-fg-color);
+    border-radius: 3px;
+}
+
+.mss-custom-timeline::-webkit-scrollbar-thumb {
+    background: var(--mss-custom-border-color);
+    border-radius: 3px;
+}
+
+.mss-custom-timeline::-webkit-scrollbar-thumb:hover {
+    background: var(--mss-custom-text-muted);
 }
 
 .mss-custom-timeline-item {
@@ -68,11 +95,24 @@
     margin-right: auto;
 }
 
-.mss-custom-message-timestamp {
-    font-size: 11px;
+.mss-custom-message-sent-timestamp,
+.mss-custom-message-received-timestamp {
+    font-size: 9px !important;
     color: var(--mss-custom-text-muted);
-    margin-top: 4px;
+    margin-top: 2px;
+}
+
+.mss-custom-message-sent-timestamp {
     text-align: right;
+}
+
+.mss-custom-message-received-timestamp {
+    text-align: left;
+}
+
+/* Remove any duplicate timestamp styles */
+.mss-custom-message-timestamp {
+    display: none;
 }
 
 /* Dark theme variables */
@@ -166,9 +206,10 @@
     word-wrap: break-word;
 }
 
-.mss-custom-whatsapp-timeline .mss-custom-message-timestamp {
-    font-size: 11px;
+.mss-custom-message-owner {
+    font-size: 9px !important;
     color: var(--mss-custom-text-muted);
-    margin-top: 4px;
+    margin-top: 1px;
     text-align: right;
+    font-style: italic;
 }

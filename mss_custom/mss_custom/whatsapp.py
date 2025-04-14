@@ -56,7 +56,7 @@ def get_whatsapp_messages(issue_name):
             "reference_doctype": "Issue",
             "reference_name": issue_name
         },
-        fields=["name", "type", "message", "creation", "from", "to", "content_type"],
+        fields=["name", "message", "type", "creation", "from", "to", "content_type", "owner"],
         order_by="creation asc"
     )
     return messages
