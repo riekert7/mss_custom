@@ -1,0 +1,174 @@
+/* WhatsApp Messages Timeline in Issue Form */
+.mss-custom-whatsapp-timeline {
+    margin: 15px 0;
+}
+
+.mss-custom-chats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+}
+
+.mss-custom-chat-section {
+    border: 1px solid var(--mss-custom-border-color);
+    border-radius: 6px;
+    padding: 10px;
+    background: var(--mss-custom-fg-color);
+}
+
+.mss-custom-contact-header {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--mss-custom-border-color);
+}
+
+.mss-custom-contact-header h3 {
+    margin: 0;
+    color: var(--mss-custom-text-color);
+    font-size: 14px;
+}
+
+.mss-custom-contact-number {
+    font-size: 12px;
+    color: var(--mss-custom-text-muted);
+    display: block;
+}
+
+.mss-custom-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mss-custom-timeline-item {
+    display: flex;
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.mss-custom-message-sent,
+.mss-custom-message-received {
+    padding: 8px 12px;
+    border-radius: 8px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.mss-custom-message-sent {
+    background-color: var(--mss-custom-message-sent-bg);
+    color: var(--mss-custom-text-color);
+    border-radius: 8px 8px 0 8px;
+    margin-left: auto;
+}
+
+.mss-custom-message-received {
+    background-color: var(--mss-custom-message-received-bg);
+    color: var(--mss-custom-text-color);
+    border-radius: 8px 8px 8px 0;
+    margin-right: auto;
+}
+
+.mss-custom-message-timestamp {
+    font-size: 11px;
+    color: var(--mss-custom-text-muted);
+    margin-top: 4px;
+    text-align: right;
+}
+
+/* Dark theme variables */
+[data-theme="dark"] .mss-custom-whatsapp-timeline {
+    --mss-custom-fg-color: #141414;
+    --mss-custom-border-color: #404040;
+    --mss-custom-text-color: #ffffff;
+    --mss-custom-text-muted: #a0a0a0;
+    --mss-custom-message-sent-bg: #1f3a1f;
+    --mss-custom-message-received-bg: #363636;
+}
+
+/* Light theme variables */
+[data-theme="light"] .mss-custom-whatsapp-timeline {
+    --mss-custom-fg-color: #ffffff;
+    --mss-custom-border-color: #e0e0e0;
+    --mss-custom-text-color: #333333;
+    --mss-custom-text-muted: #666666;
+    --mss-custom-message-sent-bg: #daf8cb;
+    --mss-custom-message-received-bg: #f1f1f1;
+}
+
+/* Additional styles for the chat sections */
+.mss-custom-chat-section {
+    transition: all 0.3s ease;
+}
+
+.mss-custom-chat-section:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .mss-custom-chat-section:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Chat sections */
+.mss-custom-whatsapp-timeline .mss-custom-chat-section {
+    transition: all 0.3s ease;
+    border: 1px solid var(--mss-custom-border-color);
+    border-radius: 6px;
+    padding: 10px;
+    background: var(--mss-custom-fg-color);
+    margin-bottom: 15px;
+}
+
+.mss-custom-whatsapp-timeline .mss-custom-chat-section:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .mss-custom-whatsapp-timeline .mss-custom-chat-section:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Contact header */
+.mss-custom-whatsapp-timeline .mss-custom-contact-header {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--mss-custom-border-color);
+}
+
+.mss-custom-whatsapp-timeline .mss-custom-contact-header h3 {
+    margin: 0;
+    color: var(--mss-custom-text-color);
+    font-size: 14px;
+}
+
+.mss-custom-whatsapp-timeline .mss-custom-contact-number {
+    font-size: 12px;
+    color: var(--mss-custom-text-muted);
+    display: block;
+}
+
+/* Messages */
+.mss-custom-whatsapp-timeline .mss-custom-message-sent {
+    background-color: var(--mss-custom-message-sent-bg);
+    color: var(--mss-custom-text-color);
+    padding: 8px 12px;
+    border-radius: 8px 8px 0 8px;
+    max-width: 80%;
+    margin-left: auto;
+    word-wrap: break-word;
+}
+
+.mss-custom-whatsapp-timeline .mss-custom-message-received {
+    background-color: var(--mss-custom-message-received-bg);
+    color: var(--mss-custom-text-color);
+    padding: 8px 12px;
+    border-radius: 8px 8px 8px 0;
+    max-width: 80%;
+    margin-right: auto;
+    word-wrap: break-word;
+}
+
+.mss-custom-whatsapp-timeline .mss-custom-message-timestamp {
+    font-size: 11px;
+    color: var(--mss-custom-text-muted);
+    margin-top: 4px;
+    text-align: right;
+}
