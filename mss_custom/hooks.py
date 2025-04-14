@@ -143,7 +143,10 @@ doc_events = {
     "Issue": {
         "before_print": "mss_custom.mss_custom.issue.before_print_issue",
         "validate": "mss_custom.mss_custom.doctype.issue_users.issue_users.validate_issue_users",
-        "on_update": "mss_custom.mss_custom.doctype.issue_users.issue_users.handle_issue_users_changes"
+        "on_update": [
+            "mss_custom.mss_custom.doctype.issue_users.issue_users.handle_issue_users_changes",
+            "mss_custom.mss_custom.issue.handle_issue_updates"
+        ]
     }
 }
 

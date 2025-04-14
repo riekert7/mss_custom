@@ -1,7 +1,7 @@
 # mss_custom/mss_custom/issue.py
 
 import frappe
-from frappe.utils import format_datetime
+from frappe.utils import format_datetime, get_datetime, now
 
 def before_print_issue(self, method, args=None):
     """Generate HTML for WhatsApp messages, communications, and comments."""
@@ -634,3 +634,14 @@ def generate_activity_timeline_html(doctype, docname):
     """
     
     return html
+
+def handle_issue_updates(self, method):
+    """Handle issue updates."""
+    previous_self = self.get_doc_before_save()
+    if previous_self.status != "Closed" and self.status == "Closed":
+        time_now = get_datetime(now())
+        self.resolution_date = time_now
+        if self.opening_date and self.opening_time and self.resolution_date:
+            time_var = (time_now - get_datetime(self.creation)).total_seconds()
+            self.resolution_time = f"{time_var:.2f}"
+        self.save()
