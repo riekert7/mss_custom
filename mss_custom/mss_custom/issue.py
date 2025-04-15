@@ -73,10 +73,10 @@ def generate_whatsapp_messages_html(issue_name):
             filters={"reference_doctype": "Issue", "reference_name": issue_name},
             fields=["name", "message", "type", "creation", "from", "to", "content_type", "owner"]
         )
-        
+
         if not messages:
             return ""
-        
+
         # Group messages by contact
         contact_messages = {}
         for msg in messages:
@@ -84,15 +84,15 @@ def generate_whatsapp_messages_html(issue_name):
             if contact not in contact_messages:
                 contact_messages[contact] = []
             contact_messages[contact].append(msg)
-        
+
         # Sort contacts alphabetically
         sorted_contacts = sorted(contact_messages.keys())
-        
+
         # Debug: Log number of contacts and messages
         frappe.log_error(f"Number of contacts: {len(sorted_contacts)}", "WhatsApp Messages Debug")
         for contact in sorted_contacts:
             frappe.log_error(f"Contact {contact} has {len(contact_messages[contact])} messages", "WhatsApp Messages Debug")
-        
+
         # Start building HTML
         html = """
         <div class="mss-custom-print-wrapper" style="width: 100%; margin: 0; padding: 0;">
@@ -243,16 +243,16 @@ def generate_whatsapp_messages_html(issue_name):
             <div class="mss-custom-whatsapp-timeline">
                 <div class="mss-custom-chats-container">
         """
-        
+
         # Add chat sections for each contact
         for contact in sorted_contacts:
             msgs = contact_messages[contact]
             # Sort messages by creation time
             msgs.sort(key=lambda x: x.creation)
-            
+
             # Get contact name
             contact_name = frappe.get_value("WhatsApp Contact", {"mobile_no": contact}, "contact_name") or contact
-            
+
             html += f"""
                     <div class="mss-custom-chat-section">
                         <div class="mss-custom-contact-header">
@@ -261,11 +261,11 @@ def generate_whatsapp_messages_html(issue_name):
                         </div>
                         <div class="mss-custom-timeline">
             """
-            
+
             for msg in msgs:
                 msg_class = "mss-custom-message-received" if msg.get('type') == "Incoming" else "mss-custom-message-sent"
                 timestamp = frappe.utils.format_datetime(msg.creation)
-                
+
                 if msg.content_type == "text":
                     message_content = frappe.utils.escape_html(msg.message or '')
                 else:
@@ -275,12 +275,12 @@ def generate_whatsapp_messages_html(issue_name):
                             message_content = f'<a href="{msg.message}" target="_blank">{msg.message.split("/")[-1]}</a>'
                         except (AttributeError, IndexError):
                             message_content = f'<a href="{msg.message}" target="_blank">File</a>'
-                
+
                 # Add owner info for outgoing messages
                 owner_info = ""
                 if msg.get('type') != "Incoming" and msg.get('owner'):
                     owner_info = f'<div class="mss-custom-message-owner">{frappe.utils.escape_html(msg.owner)}</div>'
-                
+
                 html += f"""
                         <div class="mss-custom-timeline-item">
                             <div class="{msg_class}">
@@ -292,23 +292,23 @@ def generate_whatsapp_messages_html(issue_name):
                             </div>
                         </div>
                 """
-            
+
             html += """
-                        </div>
-                    </div>
-            """
-        
-        html += """
                 </div>
+            </div>
+            """
+
+        html += """
+            </div>
             </div>
         </div>
         """
-        
+
         # Debug: Log the generated HTML structure
         frappe.log_error(f"Generated HTML structure: {html[:500]}...", "WhatsApp Messages Debug")
-        
+
         return html
-        
+
     except Exception as e:
         frappe.log_error(f"Error generating WhatsApp messages HTML: {str(e)}", "WhatsApp Messages Error")
         return ""
@@ -358,13 +358,13 @@ def generate_activity_timeline_html(doctype, docname):
         if comm.content or comm.subject:
             all_activities.append({
                 "type": "communication",
-                        "content": comm.content or "",
-                        "subject": comm.subject or "",
+                            "content": comm.content or "",
+                            "subject": comm.subject or "",
                 "creation": comm.creation,
-                        "by": comm.sender,
-                        "recipients": comm.recipients,
-                        "communication_type": comm.communication_type,
-                        "owner": comm.owner
+                            "by": comm.sender,
+                            "recipients": comm.recipients,
+                            "communication_type": comm.communication_type,
+                            "owner": comm.owner
             })
     
     # Process comments
