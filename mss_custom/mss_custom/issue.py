@@ -335,21 +335,21 @@ def generate_activity_timeline_html(doctype, docname):
         order_by="creation desc"
     )
     
-    # Get document shares
-    shares = frappe.get_all(
-        "DocShare",
-        fields=["user", "share_doctype", "share_name", "creation", "share_name"],
-        filters={"share_doctype": doctype, "share_name": docname},
-        order_by="creation desc"
-    )
+    # # Get document shares
+    # shares = frappe.get_all(
+    #     "DocShare",
+    #     fields=["user", "share_doctype", "share_name", "creation", "share_name"],
+    #     filters={"share_doctype": doctype, "share_name": docname},
+    #     order_by="creation desc"
+    # )
     
-    # Get document assignments
-    assignments = frappe.get_all(
-        "ToDo",
-        fields=["allocated_to", "description", "creation", "reference_type", "reference_name", "status"],
-        filters={"reference_type": doctype, "reference_name": docname},
-        order_by="creation desc"
-    )
+    # # Get document assignments
+    # assignments = frappe.get_all(
+    #     "ToDo",
+    #     fields=["allocated_to", "description", "creation", "reference_type", "reference_name", "status"],
+    #     filters={"reference_type": doctype, "reference_name": docname},
+    #     order_by="creation desc"
+    # )
     
     all_activities = []
     
@@ -388,14 +388,14 @@ def generate_activity_timeline_html(doctype, docname):
     
     # # Process assignments
     # for assignment in assignments:
-    #     if assignment.status == "Open":
+    #     if assignment.get('status') == "Open":
     #         all_activities.append({
     #             "type": "assignment",
     #             "content": f"System assigned {assignment.allocated_to}: {assignment.description}",
     #             "creation": assignment.creation,
     #             "by": "System"
     #         })
-    #     elif assignment.status == "Cancelled":
+    #     elif assignment.get('status') == "Cancelled":
     #         all_activities.append({
     #             "type": "assignment",
     #             "content": f"Assignment of {assignment.allocated_to} removed by System",
@@ -635,13 +635,21 @@ def generate_activity_timeline_html(doctype, docname):
     
     return html
 
-def handle_issue_updates(self, method):
-    """Handle issue updates."""
+def update_resolution_details(self):
+    """Update resolution details."""
     previous_self = self.get_doc_before_save()
-    if previous_self.status != "Closed" and self.status == "Closed":
+
+    if not previous_self:
+        return
+
+    if previous_self.get('status') != "Closed" and self.get('status') == "Closed":
         time_now = get_datetime(now())
         self.resolution_date = time_now
         if self.opening_date and self.opening_time and self.resolution_date:
             time_var = (time_now - get_datetime(self.creation)).total_seconds()
             self.resolution_time = f"{time_var:.2f}"
         self.save()
+
+def handle_issue_updates(self, method):
+    """Handle issue updates."""
+    update_resolution_details(self)
