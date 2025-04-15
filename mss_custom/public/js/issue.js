@@ -4,46 +4,50 @@ $(document).on('app_ready', function () {
         if (route && route[0] == "Form" && route[1] == "Issue") {
             frappe.ui.form.on("Issue", {
                 refresh: function(frm) {
-                    // Add a custom section for messages
-                    if (!frm.custom_messages_section) {
-                        // Create a new section
-                        frm.custom_messages_section = $(`
-                            <div class="section issue-form">
-                                <div class="section-head">
+                    // Remove existing messages section if it exists
+                    if (frm.custom_messages_section) {
+                        frm.custom_messages_section.remove();
+                        frm.custom_messages_section = null;
+                    }
+        
+                    // Create a new section
+                    frm.custom_messages_section = $(`
+                        <div class="section issue-form">
+                            <div class="section-head">
                                 <h3></h3>    
                                 <h3>WhatsApp Chats on Ticket</h3>
-                                </div>
-                                <div class="section-body">
-                                    <div class="mss-custom-whatsapp-timeline">
-                                        <div class="mss-custom-chats-container"></div>
-                                    </div>
+                            </div>
+                            <div class="section-body">
+                                <div class="mss-custom-whatsapp-timeline">
+                                    <div class="mss-custom-chats-container"></div>
                                 </div>
                             </div>
-                        `);
-                        
-                        // Add the section to the form's main content area
-                        frm.page.wrapper.find('.form-layout').append(frm.custom_messages_section);
-                    }
+                        </div>
+                    `);
                     
+                    // Add the section to the form's main content area
+                    frm.page.wrapper.find('.form-layout').append(frm.custom_messages_section);
+                    frm.custom_messages_section.find('.mss-custom-chats-container').hide();
                     // Initial load of messages
                     load_messages(frm);
                     
                     // Subscribe to real-time updates
                     subscribe_to_updates(frm);
+                    frm.custom_messages_section.find('.mss-custom-chats-container').show();
                 }
             });
-
+        
             // Add validation for Issue Users child table
             frappe.ui.form.on("Issue Users", {
                 user: function(frm, cdt, cdn) {
                     let row = locals[cdt][cdn];
                     if (!row.user) return;
-
+        
                     // Check for duplicate users in the table
                     let duplicate = frm.doc.custom_support_team.filter(d => 
                         d.user === row.user && d.name !== row.name
                     );
-
+        
                     if (duplicate.length > 0) {
                         frappe.throw(__("User {0} is already added to this Issue", [row.user]));
                         frappe.model.set_value(cdt, cdn, 'user', '');
@@ -67,6 +71,7 @@ function load_messages(frm) {
         }
     });
 }
+
 
 function update_messages_display(frm, messages) {
     const container = frm.custom_messages_section.find('.mss-custom-chats-container');

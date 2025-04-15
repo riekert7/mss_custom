@@ -5,13 +5,14 @@
 
 .mss-custom-chats-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, 300px);
     gap: 15px;
     max-height: 600px;
     overflow-y: auto;
 }
 
 .mss-custom-chat-section {
+    width: 300px;
     border: 1px solid var(--mss-custom-border-color);
     border-radius: 6px;
     padding: 10px;
