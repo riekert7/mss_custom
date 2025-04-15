@@ -250,6 +250,7 @@ doc_events = {
 fixtures = [
     {"dt": "Custom Field", "filters": [["module", "=", "MSS Custom"]]},
     {"dt": "Server Script", "filters": [["module", "=", "MSS Custom"], ["disabled", "=", 0]]},
+    {"dt": "Client Script", "filters": [["module", "=", "MSS Custom"], ["enabled", "=", 1]]},
     {"dt": "DocType", "filters": [["module", "=", "MSS Custom"]]},
     {"dt": "Print Format", "filters": [["module", "=", "MSS Custom"]]}
 ]

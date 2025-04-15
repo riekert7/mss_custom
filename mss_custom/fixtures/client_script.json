@@ -1,0 +1,13 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Issue",
+  "enabled": 1,
+  "modified": "2025-04-15 22:07:48.190032",
+  "module": "MSS Custom",
+  "name": "sys_issue_customer_select",
+  "script": "frappe.ui.form.on('Issue', {\r\n    refresh: function(frm) {\r\n        // Apply dynamic filter when form is loaded\r\n        frm.fields_dict['custom_logged_by_contact'].get_query = function(doc, cdt, cdn) {\r\n            return {\r\n                filters: {\r\n                    'link_doctype': 'Customer',\r\n                    'link_name': doc.customer\r\n                }\r\n            };\r\n        };\r\n    }\r\n});\r\n",
+  "view": "Form"
+ }
+]
